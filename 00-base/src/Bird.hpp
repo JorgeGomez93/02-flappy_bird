@@ -25,6 +25,10 @@ public:
 
     void jump() noexcept;
 
+    void move_left();
+    
+    void move_right();
+
     void update(float dt) noexcept;
 
     void render(sf::RenderTarget& target) const noexcept;

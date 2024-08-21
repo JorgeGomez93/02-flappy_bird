@@ -8,11 +8,12 @@ PauseState::PauseState(StateMachine* sm) noexcept
 {
 }
 
-void PauseState::enter(std::shared_ptr<World> world, std::shared_ptr<Bird> bird, int score) noexcept
+void PauseState::enter(std::shared_ptr<World> world, std::shared_ptr<Bird> bird, int score, bool _hard_mode) noexcept
 {
     paused_world = world;
     paused_bird = bird;
     paused_score = score;
+    paused_hard_mode = _hard_mode;
 }
 
 void PauseState::exit() noexcept
@@ -26,7 +27,7 @@ void PauseState::handle_inputs(const sf::Event& event) noexcept
 {
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
     {
-        state_machine->change_state("playing", paused_world, paused_bird, paused_score);
+        state_machine->change_state("playing", paused_world, paused_bird, paused_score, paused_hard_mode);
     }
 }
 

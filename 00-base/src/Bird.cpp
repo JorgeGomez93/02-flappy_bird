@@ -30,6 +30,15 @@ void Bird::jump() noexcept
     }
 }
 
+void Bird::move_left()
+{
+    x-=Settings::MAIN_SCROLL_SPEED * 0.1f;
+}
+void Bird::move_right()
+{
+    x+=Settings::MAIN_SCROLL_SPEED * 0.1f;
+}
+
 void Bird::update(float dt) noexcept
 {
     vy += Settings::GRAVITY * dt;
