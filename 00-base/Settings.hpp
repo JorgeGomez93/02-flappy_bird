@@ -47,6 +47,9 @@ struct Settings
     static constexpr int HUGE_TEXT_SIZE{56};
     static constexpr int FLAPPY_TEXT_SIZE{28};
 
+    static constexpr float MIN_LOG_SPAWN_TIME{1.2f}; // Min 1.2 segundo
+    static constexpr float MAX_LOG_SPAWN_TIME{2.0f}; // Max 2.2 segundos
+
     static std::unordered_map<std::string, sf::Texture> textures;
     static std::unordered_map<std::string, sf::SoundBuffer> sound_buffers;
     static std::unordered_map<std::string, sf::Sound> sounds;

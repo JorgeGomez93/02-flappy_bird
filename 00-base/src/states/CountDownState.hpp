@@ -28,5 +28,5 @@ private:
     std::shared_ptr<World> world;
     int counter{3};
     float timer{0.f};
-    bool is_hard_mode = false;
+    bool is_hard_mode;
 };

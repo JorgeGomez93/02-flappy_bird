@@ -11,18 +11,28 @@
 #include <Settings.hpp>
 #include <src/World.hpp>
 
-World::World(bool _generate_logs) noexcept
-    : generate_logs{_generate_logs}, background{Settings::textures["background"]}, ground{Settings::textures["ground"]},
+// Función para generar tiempos aleatorios en un rango dado
+inline float random_time(float min, float max) {
+    return min + static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * (max - min);
+}
+
+World::World(bool _generate_logs, bool _hard_mode) noexcept
+    : generate_logs{_generate_logs}, hard_mode{_hard_mode}, background{Settings::textures["background"]}, ground{Settings::textures["ground"]},
       logs{}, rng{std::default_random_engine{}()}
 {
     ground.setPosition(0, Settings::VIRTUAL_HEIGHT - Settings::GROUND_HEIGHT);
     std::uniform_int_distribution<int> dist(0, 80);
     last_log_y = -Settings::LOG_HEIGHT + dist(rng) + 20;
+    
+    std::srand(static_cast<unsigned>(std::time(nullptr)));  // Inicializar el generador de números aleatorios
+    // Inicializar logs_spawn_timer con un tiempo aleatorio
+    logs_spawn_timer = random_time(Settings::MIN_LOG_SPAWN_TIME, Settings::MAX_LOG_SPAWN_TIME);
 }
 
-void World::reset(bool _generate_logs) noexcept
+void World::reset(bool _generate_logs, bool _hard_mode) noexcept
 {
     generate_logs = _generate_logs;
+    hard_mode = _hard_mode;
 }
 
 bool World::collides(const sf::FloatRect& rect) const noexcept
@@ -60,18 +70,36 @@ void World::update(float dt) noexcept
 {
     if (generate_logs)
     {
-        logs_spawn_timer += dt;
+        if(!hard_mode){
 
-        if (logs_spawn_timer >= Settings::TIME_TO_SPAWN_LOGS)
+            logs_spawn_timer += dt;
+
+            if (logs_spawn_timer >= Settings::TIME_TO_SPAWN_LOGS)
+            {
+                logs_spawn_timer = 0.f;
+
+                std::uniform_int_distribution<int> dist{-20, 20};
+                float y = std::max(-Settings::LOG_HEIGHT + 10, std::min(last_log_y + dist(rng), Settings::VIRTUAL_HEIGHT + 90 - Settings::LOG_HEIGHT));
+
+                last_log_y = y;
+
+                logs.push_back(log_factory.create(Settings::VIRTUAL_WIDTH, y));
+            }
+        }else
         {
-            logs_spawn_timer = 0.f;
+            logs_spawn_timer -= dt;
 
-            std::uniform_int_distribution<int> dist{-20, 20};
-            float y = std::max(-Settings::LOG_HEIGHT + 10, std::min(last_log_y + dist(rng), Settings::VIRTUAL_HEIGHT + 90 - Settings::LOG_HEIGHT));
+            if (logs_spawn_timer <= 0.f)
+            {
+                int new_x_position = Settings::VIRTUAL_WIDTH;
+                std::uniform_int_distribution<int> dist{-30, 30};
+                float y = std::max(-Settings::LOG_HEIGHT + 40, std::min(last_log_y + dist(rng), Settings::VIRTUAL_HEIGHT + 90 - Settings::LOG_HEIGHT));
+                last_log_y = y;
 
-            last_log_y = y;
-
-            logs.push_back(log_factory.create(Settings::VIRTUAL_WIDTH, y));
+                logs.push_back(log_factory.create(Settings::VIRTUAL_WIDTH, y));
+                
+                logs_spawn_timer = random_time(Settings::MIN_LOG_SPAWN_TIME, Settings::MAX_LOG_SPAWN_TIME);
+            }
         }
     }
 

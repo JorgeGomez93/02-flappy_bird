@@ -24,7 +24,7 @@ void PlayingState::enter(std::shared_ptr<World> _world, std::shared_ptr<Bird> _b
     is_hard_mode = _hard_mode;
     score = _score;
     world = _world;
-    world->reset(true);
+    world->reset(true, is_hard_mode);
     
     if (_bird == nullptr)
     {
@@ -52,21 +52,20 @@ void PlayingState::handle_inputs(const sf::Event& event) noexcept
             state_machine->change_state("pause", world, bird, score, is_hard_mode);
         }
 
-    if (is_hard_mode)  // Solo permitir movimiento lateral en modo difícil
-    {
-        if (event.type == sf::Event::KeyPressed)
+        if (is_hard_mode)  // Solo permitir movimiento lateral en modo difícil
         {
-            if (event.key.code == sf::Keyboard::A)
+            if (event.type == sf::Event::KeyPressed)
             {
-                bird->move_left(); // Movimiento hacia la izquierda al presionar "A"
-            }
-            else if (event.key.code == sf::Keyboard::D)
-            {
-                bird->move_right(); // Movimiento hacia la derecha al presionar "D"
+                if (event.key.code == sf::Keyboard::A)
+                {
+                    bird->move_left(); // Movimiento hacia la izquierda al presionar "A"
+                }
+                else if (event.key.code == sf::Keyboard::D)
+                {
+                    bird->move_right(); // Movimiento hacia la derecha al presionar "D"
+                }
             }
         }
-    }
-
     }
 }
 
@@ -79,7 +78,7 @@ void PlayingState::update(float dt) noexcept
     {
         Settings::sounds["explosion"].play();
         Settings::sounds["hurt"].play();
-        state_machine->change_state("count_down");
+        state_machine->change_state("count_down",nullptr,nullptr,0,is_hard_mode);
     }
 
     if (world->update_scored(bird->get_collision_rect()))

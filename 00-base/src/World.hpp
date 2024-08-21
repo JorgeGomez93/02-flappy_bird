@@ -22,13 +22,13 @@
 class World
 {
 public:
-    World(bool _generate_logs = false) noexcept;
+    World(bool _generate_logs = false, bool _hard_mode = false) noexcept;
 
     World(const World& world) = delete;
 
     World& operator = (World) = delete;
 
-    void reset(bool _generate_logs) noexcept;
+    void reset(bool _generate_logs, bool _hard_mode) noexcept;
 
     bool collides(const sf::FloatRect& rect) const noexcept;
 
@@ -39,6 +39,7 @@ public:
     void render(sf::RenderTarget& target) const noexcept;
 private:
     bool generate_logs;
+    bool hard_mode;
 
     sf::Sprite background;
     sf::Sprite ground;
