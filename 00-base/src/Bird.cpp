@@ -58,3 +58,8 @@ void Bird::render(sf::RenderTarget& target) const noexcept
 {
     target.draw(sprite);
 }
+
+void Bird::set_texture(const sf::Texture& texture)
+{
+    sprite.setTexture(texture);
+}

@@ -15,3 +15,4 @@
 #include <SFML/Graphics.hpp>
 
 void render_text(sf::RenderTarget& target, float x, float y, const std::string& text_str, int size, const std::string& font_name, const sf::Color& color, bool center = false) noexcept;
+

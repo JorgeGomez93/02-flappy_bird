@@ -37,6 +37,16 @@ public:
     void update(float dt) noexcept;
 
     void render(sf::RenderTarget& target) const noexcept;
+    
+    // Método para obtener el contador de pares de troncos
+    int get_log_pair_counter() const noexcept;
+
+    // Nuevo método para obtener el contador de pares de troncos visibles
+    int get_visible_log_pair_counter() const noexcept;
+
+    // Método para obtener un par de troncos específico por índice
+    std::shared_ptr<LogPair> get_log_pair(int index) const noexcept;
+    
 private:
     bool generate_logs;
     bool hard_mode;
@@ -55,4 +65,7 @@ private:
 
     float logs_spawn_timer{0.f};
     float last_log_y{0.f};
+
+    int log_pair_counter{0};
+    int visible_log_pair_counter{0};
 };

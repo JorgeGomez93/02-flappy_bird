@@ -68,6 +68,20 @@ void Settings::load_textures()
     }
 
     Settings::textures["Log"] = texture;
+
+    if (!texture.loadFromFile(Settings::GRAPHICS_PATH / "worm.png"))
+    {
+        throw std::runtime_error{"Error loading texture graphics/worm.png"};
+    }
+
+    Settings::textures["worm"] = texture;
+
+    if (!texture.loadFromFile(Settings::GRAPHICS_PATH / "ghost.png"))
+    {
+        throw std::runtime_error{"Error loading texture graphics/ghost.png"};
+    }
+    
+    Settings::textures["ghost"] = texture;
 }
 
 void Settings::load_sounds()

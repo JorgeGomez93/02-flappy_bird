@@ -47,6 +47,11 @@ struct Settings
     static constexpr int HUGE_TEXT_SIZE{56};
     static constexpr int FLAPPY_TEXT_SIZE{28};
 
+    static constexpr float GHOST_WIDTH{39.f};
+    static constexpr float GHOST_HEIGHT{28.f};
+    static constexpr float WORM_WIDTH{28.f};
+    static constexpr float WORM_HEIGHT{28.f};
+
     static constexpr float MIN_LOG_SPAWN_TIME{1.2f}; // Min 1.2 segundo
     static constexpr float MAX_LOG_SPAWN_TIME{2.0f}; // Max 2.2 segundos
 

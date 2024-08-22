@@ -28,9 +28,20 @@ public:
 
     void render(sf::RenderTarget& target) const noexcept override;
 
+    bool collides(const sf::FloatRect& rect) const noexcept;
+
+    bool is_out_of_game(const sf::Sprite& sprite) noexcept;
+
 private:
     std::shared_ptr<Bird> bird;
     std::shared_ptr<World> world;
     int score{0};
     bool is_hard_mode = false;
+    
+    bool worm_visible{false};
+    sf::Sprite worm_sprite;
+    sf::Text time_left_text;
+    sf::FloatRect get_worm_collision_rect() const noexcept;
+    bool is_invulnerable{false};
+    float invulnerability_timer{0.f};
 };

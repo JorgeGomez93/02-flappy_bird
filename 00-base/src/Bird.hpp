@@ -33,6 +33,9 @@ public:
 
     void render(sf::RenderTarget& target) const noexcept;
 
+    // Método para cambiar la textura del pájaro
+    void set_texture(const sf::Texture& texture);
+
 private:
     float x;
     float y;

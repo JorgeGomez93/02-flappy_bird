@@ -65,3 +65,13 @@ void LogPair::reset(float _x, float _y) noexcept
     y = _y;
     scored = false;
 }
+
+float LogPair::get_x() const noexcept
+{
+    return x;
+}
+
+float LogPair::get_y() const noexcept
+{
+    return y;
+}

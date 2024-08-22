@@ -33,6 +33,8 @@ void World::reset(bool _generate_logs, bool _hard_mode) noexcept
 {
     generate_logs = _generate_logs;
     hard_mode = _hard_mode;
+    log_pair_counter = 0;
+    visible_log_pair_counter = 0;
 }
 
 bool World::collides(const sf::FloatRect& rect) const noexcept
@@ -92,11 +94,15 @@ void World::update(float dt) noexcept
             if (logs_spawn_timer <= 0.f)
             {
                 int new_x_position = Settings::VIRTUAL_WIDTH;
-                std::uniform_int_distribution<int> dist{-30, 30};
-                float y = std::max(-Settings::LOG_HEIGHT + 40, std::min(last_log_y + dist(rng), Settings::VIRTUAL_HEIGHT + 90 - Settings::LOG_HEIGHT));
+                std::uniform_int_distribution<int> dist{-50, 50};
+                float y = std::max(-Settings::LOG_HEIGHT + 10, std::min(last_log_y + dist(rng), Settings::VIRTUAL_HEIGHT + 90 - Settings::LOG_HEIGHT));
                 last_log_y = y;
 
-                logs.push_back(log_factory.create(Settings::VIRTUAL_WIDTH, y));
+                logs.push_back(log_factory.create(new_x_position, y));
+
+                log_pair_counter++;
+
+                visible_log_pair_counter++;
                 
                 logs_spawn_timer = random_time(Settings::MIN_LOG_SPAWN_TIME, Settings::MAX_LOG_SPAWN_TIME);
             }
@@ -128,7 +134,10 @@ void World::update(float dt) noexcept
             auto log_pair = *it;
             log_factory.remove(log_pair);
             it = logs.erase(it);
-            
+            if(hard_mode)
+            {
+                visible_log_pair_counter--;//solo si esta en modo dificil
+            }
         }
         else
         {
@@ -148,4 +157,27 @@ void World::render(sf::RenderTarget& target) const noexcept
     }
 
     target.draw(ground);
+}
+
+int World::get_log_pair_counter() const noexcept
+{
+    return log_pair_counter;
+}
+
+
+int World::get_visible_log_pair_counter() const noexcept
+{
+    return visible_log_pair_counter;
+}
+
+std::shared_ptr<LogPair> World::get_log_pair(int index) const noexcept
+{
+    if (index < 0 || index >= logs.size())
+    {
+        return nullptr;
+    }
+
+    auto it = logs.begin();
+    std::advance(it, index);
+    return *it;
 }

@@ -30,6 +30,10 @@ public:
 
     void reset(float _x, float _y) noexcept;
 
+    float get_x() const noexcept;
+    
+    float get_y() const noexcept;
+
 private:
     float x;
     float y;
