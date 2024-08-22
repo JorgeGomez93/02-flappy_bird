@@ -36,11 +36,10 @@ Game::Game()
     render_sprite.setTexture(render_texture.getTexture());
     render_sprite.setScale(scale_factors);
 
-    state_machine.change_state("title");
+    state_machine.change_state("title",nullptr,nullptr,0,false,false,0);
 
     Settings::music.setLoop(true);
     Settings::music.play();
-    //Settings::music.setPitch(1.5f);
 }
 
 sf::RenderWindow& Game::get_window() noexcept

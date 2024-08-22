@@ -25,11 +25,11 @@ void TitleScreenState::handle_inputs(const sf::Event& event) noexcept
 
         if (event.key.code == sf::Keyboard::Num1) {
 
-            state_machine->change_state("count_down", nullptr,nullptr,0,false);
+            state_machine->change_state("count_down", nullptr,nullptr,0,false,false,0);
 
         } else if (event.key.code == sf::Keyboard::Num2) {
 
-            state_machine->change_state("count_down",nullptr,nullptr,0,true);
+            state_machine->change_state("count_down",nullptr,nullptr,0,true,false,0);
         }
     }
 }

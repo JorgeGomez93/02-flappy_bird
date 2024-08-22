@@ -25,7 +25,7 @@ public:
 
     virtual ~BaseState() {}
 
-    virtual void enter(std::shared_ptr<World> world, std::shared_ptr<Bird> bird, int score, bool _hard_mode) noexcept {}
+    virtual void enter(std::shared_ptr<World> world, std::shared_ptr<Bird> bird, int score, bool _hard_mode, bool invulnerable, float time_left) noexcept {}
 
     virtual void exit() noexcept {}
 
